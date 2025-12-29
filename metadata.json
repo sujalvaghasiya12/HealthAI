@@ -1,0 +1,6 @@
+
+{
+  "name": "HealAI - Gemini Health Assistant",
+  "description": "An intelligent multilingual healthcare companion that identifies potential conditions based on symptoms and provides safe, non-medical home recovery plans using Gemini AI.",
+  "requestFramePermissions": []
+}
