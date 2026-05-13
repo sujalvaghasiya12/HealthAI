@@ -1,14 +1,21 @@
+<<<<<<< HEAD
 import React from "react";
 import { Language, PredictionResponse, UIStrings } from "../types";
 import {
   findWellnessItem,
   PoseType,
 } from "./wellnessContent";
+=======
+
+import React from 'react';
+import { PredictionResponse, UIStrings } from '../types';
+>>>>>>> 0cf126cafec8e3b33b1466dcc1055144f7316f8f
 
 interface ResultViewProps {
   data: PredictionResponse;
   onReset: () => void;
   ui: UIStrings;
+<<<<<<< HEAD
   lang: Language;
 }
 
@@ -284,6 +291,40 @@ const ResultView: React.FC<ResultViewProps> = ({
                       key={idx}
                       className="rounded-full border border-[#E2E8F0] bg-[#F8FAFC] px-4 py-2 text-[13px] font-bold text-[#64748B] shadow-sm transition-all duration-300 hover:border-[#99F6E4] hover:bg-[#F0FDFA] hover:text-[#14B8A6] sm:text-[14px]"
                     >
+=======
+}
+
+const ResultView: React.FC<ResultViewProps> = ({ data, onReset, ui }) => {
+  const urgencyColor = {
+    Low: 'bg-green-100 text-green-800',
+    Moderate: 'bg-amber-100 text-amber-800',
+    High: 'bg-red-100 text-red-800'
+  }[data.urgency];
+
+  return (
+    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+        <div className="p-6 md:p-10 flex flex-col md:flex-row gap-6 items-start">
+          <div className="flex-1">
+            <div className="flex items-center gap-3 mb-4">
+              <span className={`text-xs font-black uppercase tracking-widest px-3 py-1.5 rounded-lg ${urgencyColor}`}>
+                {ui.urgencyLabels[data.urgency]} {ui.resultPriority}
+              </span>
+              <span className="text-slate-400 text-sm">•</span>
+              <span className="text-sm font-bold text-slate-500">
+                {ui.resultConfidence}: {Math.round(data.confidence * 100)}%
+              </span>
+            </div>
+            <h2 className="text-4xl font-black text-slate-900 mb-3">{data.disease}</h2>
+            <p className="text-slate-600 text-lg leading-relaxed max-w-2xl">{data.description}</p>
+            
+            {data.symptoms && data.symptoms.length > 0 && (
+              <div className="mt-6">
+                <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-3">{ui.resultSymptoms}</p>
+                <div className="flex flex-wrap gap-2">
+                  {data.symptoms.map((s, idx) => (
+                    <span key={idx} className="bg-slate-100 text-slate-600 text-xs font-bold px-3 py-1 rounded-full border border-slate-200">
+>>>>>>> 0cf126cafec8e3b33b1466dcc1055144f7316f8f
                       {s}
                     </span>
                   ))}
@@ -291,6 +332,7 @@ const ResultView: React.FC<ResultViewProps> = ({
               </div>
             )}
           </div>
+<<<<<<< HEAD
 
           <button
             onClick={onReset}
@@ -312,11 +354,19 @@ const ResultView: React.FC<ResultViewProps> = ({
               <path d="M3 3v5h5" />
             </svg>
 
+=======
+          <button 
+            onClick={onReset}
+            className="px-6 py-3 bg-teal-50 text-teal-700 font-black rounded-2xl hover:bg-teal-600 hover:text-white transition-all duration-300 flex items-center gap-2 shadow-sm"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+>>>>>>> 0cf126cafec8e3b33b1466dcc1055144f7316f8f
             {ui.resultReset}
           </button>
         </div>
       </div>
 
+<<<<<<< HEAD
       <div className="grid gap-6 lg:grid-cols-2">
         {aiInsights.length > 0 && (
           <div className="group rounded-[1.6rem] border border-[#99F6E4] bg-white/95 p-5 shadow-[0_15px_45px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-[#14B8A6]/30 hover:shadow-[0_25px_70px_rgba(20,184,166,0.10)] sm:rounded-[2rem] sm:p-7 md:p-9 lg:col-span-2">
@@ -405,12 +455,27 @@ const ResultView: React.FC<ResultViewProps> = ({
                 className="flex gap-4 rounded-2xl border border-[#A7F3D0] bg-[#ECFDF5] p-4 text-[17px] font-semibold leading-8 text-[#0F172A] transition-all duration-300 hover:bg-[#F0FDF4] sm:text-[18px] sm:leading-9"
               >
                 <span className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-[#10B981]" />
+=======
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="bg-white rounded-[2.5rem] shadow-sm border border-slate-200 p-8 md:p-10">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="p-3 bg-emerald-50 rounded-2xl text-emerald-600 shadow-sm shadow-emerald-100">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 2a2 2 0 0 0-2 2v5H4a2 2 0 0 0-2 2v2c0 1.1.9 2 2 2h5v5c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2v-5h5a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-5V4a2 2 0 0 0-2-2h-2z"/></svg>
+            </div>
+            <h3 className="text-2xl font-black text-slate-900">{ui.resultRemedies}</h3>
+          </div>
+          <ul className="space-y-4">
+            {data.homeRemedies.map((remedy, idx) => (
+              <li key={idx} className="flex gap-4 text-slate-700 font-medium bg-slate-50/50 p-3 rounded-2xl">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 mt-2 shrink-0" />
+>>>>>>> 0cf126cafec8e3b33b1466dcc1055144f7316f8f
                 {remedy}
               </li>
             ))}
           </ul>
         </div>
 
+<<<<<<< HEAD
         <div className="group rounded-[1.6rem] border border-[#E2E8F0] bg-white/95 p-5 shadow-[0_15px_45px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-[#14B8A6]/30 hover:shadow-[0_25px_70px_rgba(20,184,166,0.10)] sm:rounded-[2rem] sm:p-7 md:p-9">
           <div className="mb-6 flex items-center gap-3 sm:mb-8 sm:gap-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#F0FDFA] text-[#14B8A6] shadow-sm sm:h-14 sm:w-14">
@@ -605,11 +670,39 @@ const ResultView: React.FC<ResultViewProps> = ({
                   </div>
                 ))}
               </div>
+=======
+        <div className="bg-white rounded-[2.5rem] shadow-sm border border-slate-200 p-8 md:p-10">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="p-3 bg-indigo-50 rounded-2xl text-indigo-600 shadow-sm shadow-indigo-100">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><path d="M12 7v5l3 3"/></svg>
+            </div>
+            <h3 className="text-2xl font-black text-slate-900">{ui.resultYoga}</h3>
+          </div>
+          <div className="space-y-6">
+            <div>
+              <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-3">{ui.resultYogaPoses}</p>
+              <div className="flex flex-wrap gap-2">
+                {data.yogaAndExercise.yogaPoses.map((item, idx) => (
+                  <span key={idx} className="bg-indigo-50 text-indigo-700 text-sm font-bold px-4 py-2 rounded-xl shadow-sm shadow-indigo-100">{item}</span>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-xs font-black text-slate-400 uppercase tracking-widest mb-3">{ui.resultExercises}</p>
+              <ul className="space-y-2">
+                {data.yogaAndExercise.exercises.map((item, idx) => (
+                  <li key={idx} className="text-slate-700 font-medium flex gap-3 p-2 bg-slate-50/50 rounded-lg">
+                    <span className="text-indigo-500 font-black">•</span> {item}
+                  </li>
+                ))}
+              </ul>
+>>>>>>> 0cf126cafec8e3b33b1466dcc1055144f7316f8f
             </div>
           </div>
         </div>
       </div>
 
+<<<<<<< HEAD
       <div className="overflow-hidden rounded-[2rem] border border-[#E2E8F0] bg-white/95 shadow-[0_20px_60px_rgba(15,23,42,0.06)] sm:rounded-[2.5rem]">
         <div className="border-b border-[#E2E8F0] bg-[#F8FAFC] px-5 py-5 sm:px-8 sm:py-7 md:px-10">
           <h3 className="text-[27px] font-bold text-[#0F172A] sm:text-[34px]">
@@ -671,11 +764,38 @@ const ResultView: React.FC<ResultViewProps> = ({
                       />
                     </svg>
 
+=======
+      <div className="bg-white rounded-[3rem] shadow-sm border border-slate-200 overflow-hidden">
+        <div className="p-8 md:px-10 border-b border-slate-100 bg-slate-50/50">
+          <h3 className="text-2xl font-black text-slate-900">{ui.resultRecovery}</h3>
+        </div>
+        <div className="divide-y divide-slate-100">
+          <div className="p-8 md:px-10 flex flex-col md:flex-row gap-6">
+            <div className="w-40 shrink-0 font-black text-slate-400 text-xs uppercase tracking-widest pt-1">{ui.resultRest}</div>
+            <div className="flex-1 text-slate-800 font-bold text-lg">{data.recoveryPlan.rest}</div>
+          </div>
+          <div className="p-8 md:px-10 flex flex-col md:flex-row gap-6">
+            <div className="w-40 shrink-0 font-black text-slate-400 text-xs uppercase tracking-widest pt-1">{ui.resultDiet}</div>
+            <div className="flex-1 flex flex-wrap gap-2">
+               {data.recoveryPlan.diet.map((item, idx) => (
+                  <span key={idx} className="bg-orange-50 text-orange-700 text-sm font-bold px-4 py-2 rounded-2xl shadow-sm shadow-orange-100">{item}</span>
+                ))}
+            </div>
+          </div>
+          <div className="p-8 md:px-10 grid md:grid-cols-2 gap-10">
+            <div>
+              <div className="text-xs font-black text-emerald-600 uppercase tracking-widest mb-6">{ui.resultDos}</div>
+              <ul className="space-y-4">
+                {data.recoveryPlan.dos.map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-slate-700 font-bold bg-emerald-50/30 p-4 rounded-2xl border border-emerald-100">
+                    <svg className="w-5 h-5 text-emerald-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"></path></svg>
+>>>>>>> 0cf126cafec8e3b33b1466dcc1055144f7316f8f
                     {item}
                   </li>
                 ))}
               </ul>
             </div>
+<<<<<<< HEAD
 
             <div>
               <div className="mb-6 text-[12px] font-black uppercase tracking-[0.2em] text-[#14B8A6]">
@@ -702,6 +822,14 @@ const ResultView: React.FC<ResultViewProps> = ({
                       />
                     </svg>
 
+=======
+            <div>
+              <div className="text-xs font-black text-rose-600 uppercase tracking-widest mb-6">{ui.resultDonts}</div>
+              <ul className="space-y-4">
+                {data.recoveryPlan.donts.map((item, idx) => (
+                  <li key={idx} className="flex items-start gap-3 text-slate-700 font-bold bg-rose-50/30 p-4 rounded-2xl border border-rose-100">
+                    <svg className="w-5 h-5 text-rose-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="3"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+>>>>>>> 0cf126cafec8e3b33b1466dcc1055144f7316f8f
                     {item}
                   </li>
                 ))}
@@ -711,6 +839,7 @@ const ResultView: React.FC<ResultViewProps> = ({
         </div>
       </div>
 
+<<<<<<< HEAD
       <div className="rounded-[1.6rem] border border-[#99F6E4] bg-[#F0FDFA] p-5 shadow-[0_15px_50px_rgba(20,184,166,0.08)] sm:rounded-[2rem] sm:p-7 md:p-9">
         <div className="flex flex-col gap-4 sm:flex-row sm:gap-5">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-[#14B8A6] shadow-sm sm:h-14 sm:w-14">
@@ -741,6 +870,18 @@ const ResultView: React.FC<ResultViewProps> = ({
         </div>
       </div>
     </section>
+=======
+      <div className="bg-amber-50 border-2 border-amber-200 rounded-[2.5rem] p-8 md:p-10 shadow-lg shadow-amber-900/5">
+        <div className="flex items-start gap-4">
+          <svg className="w-8 h-8 text-amber-600 shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+          <div>
+            <h4 className="font-black text-amber-900 text-xl mb-2">{ui.resultDisclaimer}</h4>
+            <p className="text-amber-800 font-bold leading-relaxed italic">{data.disclaimer}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+>>>>>>> 0cf126cafec8e3b33b1466dcc1055144f7316f8f
   );
 };
 
