@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Language, PredictionResponse, UIStrings } from "../types";
 import {
   findWellnessItem,
@@ -138,12 +138,21 @@ const ResultView: React.FC<ResultViewProps> = ({
     en: {
       pose: "Pose",
       exercise: "Exercise",
+      viewDetails: "View Details",
+      hideDetails: "Hide Details",
       duration: "Duration",
       focus: "Best For",
       cue: "Practice Cue",
       poseGuide: "Pose Guide",
       preview: "Pose Preview",
       steps: "How To Perform",
+      recommendationTitle: "Suggested Wellness Support",
+      recommendationTag: "Symptom Guided",
+      whySuggested: "Why It Fits",
+      primaryPick: "Primary Pick",
+      supportPick: "Support Pick",
+      routineTitle: "Suggested Recovery Flow",
+      basedOn: "Based on your current symptom result",
       aiTitle: "AI Disease Details",
       aiTag: "Groq AI Based",
       aiNote:
@@ -152,12 +161,21 @@ const ResultView: React.FC<ResultViewProps> = ({
     hi: {
       pose: "Pose",
       exercise: "Exercise",
+      viewDetails: "View Details",
+      hideDetails: "Hide Details",
       duration: "Duration",
       focus: "Best For",
       cue: "Practice Cue",
       poseGuide: "Pose Guide",
       preview: "Pose Preview",
       steps: "How To Perform",
+      recommendationTitle: "Suggested Wellness Support",
+      recommendationTag: "Symptom Guided",
+      whySuggested: "Why It Fits",
+      primaryPick: "Primary Pick",
+      supportPick: "Support Pick",
+      routineTitle: "Suggested Recovery Flow",
+      basedOn: "Based on your current symptom result",
       aiTitle: "AI Disease Details",
       aiTag: "Groq AI Based",
       aiNote:
@@ -166,12 +184,21 @@ const ResultView: React.FC<ResultViewProps> = ({
     gu: {
       pose: "Pose",
       exercise: "Exercise",
+      viewDetails: "View Details",
+      hideDetails: "Hide Details",
       duration: "Duration",
       focus: "Best For",
       cue: "Practice Cue",
       poseGuide: "Pose Guide",
       preview: "Pose Preview",
       steps: "How To Perform",
+      recommendationTitle: "Suggested Wellness Support",
+      recommendationTag: "Symptom Guided",
+      whySuggested: "Why It Fits",
+      primaryPick: "Primary Pick",
+      supportPick: "Support Pick",
+      routineTitle: "Suggested Recovery Flow",
+      basedOn: "Based on your current symptom result",
       aiTitle: "AI Disease Details",
       aiTag: "Groq AI Based",
       aiNote:
@@ -234,6 +261,36 @@ const ResultView: React.FC<ResultViewProps> = ({
     .map((item) => item.trim())
     .filter(Boolean)
     .slice(0, 4);
+
+  const symptomPreview =
+    data.symptoms && data.symptoms.length > 0
+      ? data.symptoms.slice(0, 2).join(" and ")
+      : data.disease;
+  const [expandedPoseIndex, setExpandedPoseIndex] = useState<
+    number | null
+  >(null);
+  const [expandedExerciseIndex, setExpandedExerciseIndex] =
+    useState<number | null>(null);
+
+  const getSuggestionReason = (
+    item: {
+      benefit?: string;
+      bestFor?: string;
+      cue?: string;
+    },
+    type: "pose" | "exercise"
+  ) => {
+    const actionLabel =
+      type === "pose" ? "This pose is suggested" : "This exercise is suggested";
+    const benefitText = item.benefit
+      ? `to support ${item.benefit.toLowerCase()}`
+      : "to support recovery";
+    const focusText = item.bestFor
+      ? ` while helping with ${item.bestFor.toLowerCase()}`
+      : "";
+
+    return `${actionLabel} for symptoms like ${symptomPreview}${benefitText}${focusText}.`;
+  };
 
   return (
     <section
@@ -435,6 +492,55 @@ const ResultView: React.FC<ResultViewProps> = ({
             </h3>
           </div>
 
+          <div className="mb-6 rounded-[1.5rem] border border-[#CCFBF1] bg-[linear-gradient(135deg,rgba(240,253,250,0.95),rgba(248,250,252,0.95))] p-5 shadow-sm">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <p className="text-[12px] font-black uppercase tracking-[0.18em] text-[#14B8A6]">
+                  {detailLabels.recommendationTitle}
+                </p>
+                <h4 className="mt-2 text-[22px] font-bold text-[#0F172A] sm:text-[24px]">
+                  {detailLabels.basedOn}
+                </h4>
+                <p className="mt-2 text-[15px] leading-7 text-[#64748B] sm:text-[16px]">
+                  {symptomPreview}
+                </p>
+              </div>
+
+              <span className="rounded-full border border-[#99F6E4] bg-white px-4 py-1.5 text-[12px] font-bold uppercase tracking-[0.18em] text-[#14B8A6]">
+                {detailLabels.recommendationTag}
+              </span>
+            </div>
+
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl border border-[#CCFBF1] bg-white p-4">
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
+                  {detailLabels.primaryPick}
+                </p>
+                <p className="mt-2 text-[16px] font-bold text-[#0F172A]">
+                  {poseDetails[0]?.name || "-"}
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-[#E2E8F0] bg-white p-4">
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
+                  {detailLabels.supportPick}
+                </p>
+                <p className="mt-2 text-[16px] font-bold text-[#0F172A]">
+                  {exerciseDetails[0]?.name || "-"}
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-[#E2E8F0] bg-white p-4">
+                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
+                  {detailLabels.routineTitle}
+                </p>
+                <p className="mt-2 text-[15px] leading-7 text-[#0F172A]">
+                  Start gentle, stay steady, and finish with recovery-focused movement.
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div className="space-y-7">
             <div>
               <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -458,6 +564,12 @@ const ResultView: React.FC<ResultViewProps> = ({
                         {detailLabels.pose}
                       </span>
 
+                      <span className="rounded-full border border-[#CCFBF1] bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-[#14B8A6]">
+                        {idx === 0
+                          ? detailLabels.primaryPick
+                          : detailLabels.supportPick}
+                      </span>
+
                       <span className="rounded-full border border-[#E2E8F0] bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
                         {item.benefit}
                       </span>
@@ -467,78 +579,124 @@ const ResultView: React.FC<ResultViewProps> = ({
                       {item.name}
                     </h5>
 
-                    <div className="mt-4 overflow-hidden rounded-[1.4rem] border border-[#CCFBF1] bg-[radial-gradient(circle_at_top,_rgba(20,184,166,0.14),_rgba(255,255,255,0.98)_62%)] p-4">
-                      <div className="mb-3 flex items-center justify-between gap-3">
-                        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#14B8A6]">
-                          {detailLabels.preview}
-                        </p>
+                    <div className="mt-4 flex justify-end">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedPoseIndex((prev) =>
+                            prev === idx ? null : idx
+                          )
+                        }
+                        className="inline-flex items-center gap-2 rounded-full border border-[#99F6E4] bg-white px-4 py-2 text-[13px] font-bold text-[#14B8A6] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#14B8A6] hover:text-white"
+                      >
+                        {expandedPoseIndex === idx
+                          ? detailLabels.hideDetails
+                          : detailLabels.viewDetails}
 
-                        <span className="rounded-full border border-[#99F6E4] bg-white px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#14B8A6]">
-                          {detailLabels.pose}
-                        </span>
-                      </div>
-
-                      <div className="flex items-center justify-center rounded-[1.2rem] border border-white/90 bg-white/85 py-3 text-[#14B8A6] shadow-sm">
-                        {renderPoseSticker(item.poseType)}
-                      </div>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.4"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className={`h-4 w-4 transition-transform duration-300 ${
+                            expandedPoseIndex === idx
+                              ? "rotate-180"
+                              : ""
+                          }`}
+                        >
+                          <path d="m6 9 6 6 6-6" />
+                        </svg>
+                      </button>
                     </div>
 
-                    <p className="mt-4 text-[16px] leading-7 text-[#64748B]">
-                      {item.desc}
-                    </p>
+                    {expandedPoseIndex === idx && (
+                      <>
+                        <div className="mt-4 overflow-hidden rounded-[1.4rem] border border-[#CCFBF1] bg-[radial-gradient(circle_at_top,_rgba(20,184,166,0.14),_rgba(255,255,255,0.98)_62%)] p-4">
+                          <div className="mb-3 flex items-center justify-between gap-3">
+                            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#14B8A6]">
+                              {detailLabels.preview}
+                            </p>
 
-                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                      <div className="rounded-2xl border border-[#CCFBF1] bg-white p-3">
-                        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
-                          {detailLabels.duration}
-                        </p>
-                        <p className="mt-2 text-[15px] font-semibold leading-7 text-[#0F172A]">
-                          {item.duration}
-                        </p>
-                      </div>
+                            <span className="rounded-full border border-[#99F6E4] bg-white px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-[#14B8A6]">
+                              {detailLabels.pose}
+                            </span>
+                          </div>
 
-                      <div className="rounded-2xl border border-[#CCFBF1] bg-white p-3">
-                        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
-                          {detailLabels.focus}
-                        </p>
-                        <p className="mt-2 text-[15px] font-semibold leading-7 text-[#0F172A]">
-                          {item.bestFor}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="mt-3 rounded-2xl border border-[#99F6E4] bg-white p-3">
-                      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#14B8A6]">
-                        {detailLabels.cue}
-                      </p>
-                      <p className="mt-2 text-[15px] leading-7 text-[#0F172A]">
-                        {item.cue}
-                      </p>
-                    </div>
-
-                    {item.steps && item.steps.length > 0 && (
-                      <div className="mt-3 rounded-2xl border border-[#CCFBF1] bg-white p-3">
-                        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
-                          {detailLabels.steps}
-                        </p>
-
-                        <div className="mt-3 space-y-3">
-                          {item.steps.map((step, stepIndex) => (
-                            <div
-                              key={step}
-                              className="flex gap-3 rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] p-3"
-                            >
-                              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#F0FDFA] text-[13px] font-black text-[#14B8A6]">
-                                {stepIndex + 1}
-                              </span>
-
-                              <p className="text-[15px] leading-6 text-[#0F172A]">
-                                {step}
-                              </p>
-                            </div>
-                          ))}
+                          <div className="flex items-center justify-center rounded-[1.2rem] border border-white/90 bg-white/85 py-3 text-[#14B8A6] shadow-sm">
+                            {renderPoseSticker(item.poseType)}
+                          </div>
                         </div>
-                      </div>
+
+                        <p className="mt-4 text-[16px] leading-7 text-[#64748B]">
+                          {item.desc}
+                        </p>
+
+                        <div className="mt-3 rounded-2xl border border-[#CCFBF1] bg-white p-3">
+                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#14B8A6]">
+                            {detailLabels.whySuggested}
+                          </p>
+                          <p className="mt-2 text-[15px] leading-7 text-[#0F172A]">
+                            {getSuggestionReason(item, "pose")}
+                          </p>
+                        </div>
+
+                        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                          <div className="rounded-2xl border border-[#CCFBF1] bg-white p-3">
+                            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
+                              {detailLabels.duration}
+                            </p>
+                            <p className="mt-2 text-[15px] font-semibold leading-7 text-[#0F172A]">
+                              {item.duration}
+                            </p>
+                          </div>
+
+                          <div className="rounded-2xl border border-[#CCFBF1] bg-white p-3">
+                            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
+                              {detailLabels.focus}
+                            </p>
+                            <p className="mt-2 text-[15px] font-semibold leading-7 text-[#0F172A]">
+                              {item.bestFor}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="mt-3 rounded-2xl border border-[#99F6E4] bg-white p-3">
+                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#14B8A6]">
+                            {detailLabels.cue}
+                          </p>
+                          <p className="mt-2 text-[15px] leading-7 text-[#0F172A]">
+                            {item.cue}
+                          </p>
+                        </div>
+
+                        {item.steps && item.steps.length > 0 && (
+                          <div className="mt-3 rounded-2xl border border-[#CCFBF1] bg-white p-3">
+                            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
+                              {detailLabels.steps}
+                            </p>
+
+                            <div className="mt-3 space-y-3">
+                              {item.steps.map((step, stepIndex) => (
+                                <div
+                                  key={step}
+                                  className="flex gap-3 rounded-2xl border border-[#E2E8F0] bg-[#F8FAFC] p-3"
+                                >
+                                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#F0FDFA] text-[13px] font-black text-[#14B8A6]">
+                                    {stepIndex + 1}
+                                  </span>
+
+                                  <p className="text-[15px] leading-6 text-[#0F172A]">
+                                    {step}
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 ))}
@@ -561,6 +719,12 @@ const ResultView: React.FC<ResultViewProps> = ({
                         {detailLabels.exercise}
                       </span>
 
+                      <span className="rounded-full border border-[#D1FAE5] bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-[#10B981]">
+                        {idx === 0
+                          ? detailLabels.primaryPick
+                          : detailLabels.supportPick}
+                      </span>
+
                       <span className="rounded-full border border-[#E2E8F0] bg-white px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
                         {item.benefit}
                       </span>
@@ -570,38 +734,84 @@ const ResultView: React.FC<ResultViewProps> = ({
                       {item.name}
                     </h5>
 
-                    <p className="mt-2 text-[16px] leading-7 text-[#64748B]">
-                      {item.desc}
-                    </p>
+                    <div className="mt-4 flex justify-end">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedExerciseIndex((prev) =>
+                            prev === idx ? null : idx
+                          )
+                        }
+                        className="inline-flex items-center gap-2 rounded-full border border-[#A7F3D0] bg-white px-4 py-2 text-[13px] font-bold text-[#10B981] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#10B981] hover:text-white"
+                      >
+                        {expandedExerciseIndex === idx
+                          ? detailLabels.hideDetails
+                          : detailLabels.viewDetails}
 
-                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                      <div className="rounded-2xl border border-[#E2E8F0] bg-white p-3">
-                        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
-                          {detailLabels.duration}
-                        </p>
-                        <p className="mt-2 text-[15px] font-semibold leading-7 text-[#0F172A]">
-                          {item.duration}
-                        </p>
-                      </div>
-
-                      <div className="rounded-2xl border border-[#E2E8F0] bg-white p-3">
-                        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
-                          {detailLabels.focus}
-                        </p>
-                        <p className="mt-2 text-[15px] font-semibold leading-7 text-[#0F172A]">
-                          {item.bestFor}
-                        </p>
-                      </div>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.4"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className={`h-4 w-4 transition-transform duration-300 ${
+                            expandedExerciseIndex === idx
+                              ? "rotate-180"
+                              : ""
+                          }`}
+                        >
+                          <path d="m6 9 6 6 6-6" />
+                        </svg>
+                      </button>
                     </div>
 
-                    <div className="mt-3 rounded-2xl border border-[#A7F3D0] bg-white p-3">
-                      <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#10B981]">
-                        {detailLabels.cue}
-                      </p>
-                      <p className="mt-2 text-[15px] leading-7 text-[#0F172A]">
-                        {item.cue}
-                      </p>
-                    </div>
+                    {expandedExerciseIndex === idx && (
+                      <>
+                        <p className="mt-3 text-[16px] leading-7 text-[#64748B]">
+                          {item.desc}
+                        </p>
+
+                        <div className="mt-3 rounded-2xl border border-[#D1FAE5] bg-white p-3">
+                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#10B981]">
+                            {detailLabels.whySuggested}
+                          </p>
+                          <p className="mt-2 text-[15px] leading-7 text-[#0F172A]">
+                            {getSuggestionReason(item, "exercise")}
+                          </p>
+                        </div>
+
+                        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                          <div className="rounded-2xl border border-[#E2E8F0] bg-white p-3">
+                            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
+                              {detailLabels.duration}
+                            </p>
+                            <p className="mt-2 text-[15px] font-semibold leading-7 text-[#0F172A]">
+                              {item.duration}
+                            </p>
+                          </div>
+
+                          <div className="rounded-2xl border border-[#E2E8F0] bg-white p-3">
+                            <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#64748B]">
+                              {detailLabels.focus}
+                            </p>
+                            <p className="mt-2 text-[15px] font-semibold leading-7 text-[#0F172A]">
+                              {item.bestFor}
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="mt-3 rounded-2xl border border-[#A7F3D0] bg-white p-3">
+                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-[#10B981]">
+                            {detailLabels.cue}
+                          </p>
+                          <p className="mt-2 text-[15px] leading-7 text-[#0F172A]">
+                            {item.cue}
+                          </p>
+                        </div>
+                      </>
+                    )}
                   </div>
                 ))}
               </div>
