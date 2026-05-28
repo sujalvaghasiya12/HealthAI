@@ -20,10 +20,7 @@ export interface PredictionResponse {
   confidence: number;
   description: string;
   symptoms?: string[];
-<<<<<<< HEAD
   aiInsights?: string[];
-=======
->>>>>>> 0cf126cafec8e3b33b1466dcc1055144f7316f8f
   homeRemedies: string[];
   yogaAndExercise: {
     yogaPoses: string[];

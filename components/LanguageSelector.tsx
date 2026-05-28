@@ -1,20 +1,12 @@
-<<<<<<< HEAD
 ﻿import React from "react";
 import { LANGUAGES } from "../constants";
 import { Language } from "../types";
-=======
-
-import React from 'react';
-import { LANGUAGES } from '../constants';
-import { Language } from '../types';
->>>>>>> 0cf126cafec8e3b33b1466dcc1055144f7316f8f
 
 interface LanguageSelectorProps {
   current: Language;
   onSelect: (code: Language) => void;
 }
 
-<<<<<<< HEAD
 const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   current,
   onSelect,
@@ -41,30 +33,9 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
           </button>
         );
       })}
-=======
-const LanguageSelector: React.FC<LanguageSelectorProps> = ({ current, onSelect }) => {
-  return (
-    <div className="flex flex-wrap gap-2 p-1 bg-slate-100 rounded-lg w-fit">
-      {LANGUAGES.map(lang => (
-        <button
-          key={lang.code}
-          onClick={() => onSelect(lang.code as Language)}
-          className={`px-4 py-1.5 text-xs font-bold rounded-md transition-all whitespace-nowrap ${
-            current === lang.code 
-            ? 'bg-white text-teal-600 shadow-sm' 
-            : 'text-slate-500 hover:text-slate-800'
-          }`}
-        >
-          {lang.label}
-        </button>
-      ))}
->>>>>>> 0cf126cafec8e3b33b1466dcc1055144f7316f8f
     </div>
   );
 };
 
 export default LanguageSelector;
-<<<<<<< HEAD
 
-=======
->>>>>>> 0cf126cafec8e3b33b1466dcc1055144f7316f8f
